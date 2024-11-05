@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 
 import {
@@ -14,6 +15,7 @@ import RestaurantRatingImg from '../../assets/icons/estrela.png'
 
 import Tag from '../../components/Tag'
 import Botao from '../Button'
+import ModalPoupap from '../Modal'
 
 export type Props = {
   title: string
@@ -34,6 +36,23 @@ const Products = ({
 }: Props) => {
   const buttonText =
     location.pathname === '/Perfil' ? 'Adicionar ao carrinho' : 'Saiba mais'
+
+  const [isModalOpen, setIsModalOpen] = useState(false)
+
+  const toggleModal = () => {
+    setIsModalOpen(!isModalOpen)
+  }
+
+  const handleButtonClick = () => {
+    if (
+      location.pathname === '/Perfil' &&
+      buttonText === 'Adicionar ao carrinho'
+    ) {
+      toggleModal()
+    } else {
+      window.location.href = '/Perfil'
+    }
+  }
 
   return (
     <div className="container">
@@ -65,7 +84,12 @@ const Products = ({
               {}
               <Link to="/Perfil">
                 <Tag size="big">
-                  <Botao type="button" title={buttonText} background={'light'}>
+                  <Botao
+                    type="button"
+                    title={buttonText}
+                    background={'light'}
+                    onClick={handleButtonClick}
+                  >
                     {buttonText}
                   </Botao>
                 </Tag>
@@ -73,6 +97,7 @@ const Products = ({
             </ContainerDescritivo>
           </CardRestaurant>
         </CardConteiner>
+        {isModalOpen && <ModalPoupap onClose={toggleModal} />}
       </>
     </div>
   )
