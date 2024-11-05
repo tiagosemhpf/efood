@@ -14,25 +14,27 @@ export const ButtonContainer = styled.button<{ background: 'light' | 'dark' }>`
   font-weight: 700;
   line-height: 16px;
   text-align: center;
+  margin-top: 16px;
   cursor: pointer;
 `
 
-export const ButtonLink = styled(Link)`
+export const ButtonLink = styled(Link)<{ background: 'light' | 'dark' }>`
+  width: ${(props) => (props.background === 'dark' ? '100%' : '84px')};
   width: 304px;
   height: 24px;
-  background-color: ${colors.palePeach};
-  color: #000;
+  background-color: ${(props) =>
+    props.background === 'dark' ? colors.palePeach : colors.rosePink};
+  color: ${(props) =>
+    props.background === 'dark' ? colors.rosePink : colors.palePeach};
+  width: 70px;
+  height: 16px;
+  top: 810px;
+  left: 737px;
+  gap: 0px;
+  opacity: 0px;
+  font-family: Roboto;
   font-size: 14px;
   font-weight: 700;
-  line-height: 16px;
+  line-height: 16.41px;
   text-align: center;
-  padding: 8px;
-  text-decoration: none;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-
-  &:hover {
-    background-color: #f0f0f0;
-  }
 `

@@ -1,16 +1,35 @@
-import bannerImg from '../../assets/images/heroImgPerfil.png'
 import { ImgBanner } from './styles'
+import { useParams } from 'react-router-dom'
+import { useEffect, useState } from 'react'
+import { Efood } from '../../pages/Home'
 
 const Banner = () => {
-  return (
-    <>
+  const [catalogoServico, setCatalogoServico] = useState<Efood | null>(null)
+  const { id } = useParams<{ id: string }>()
+
+  useEffect(() => {
+    fetch(`https://fake-api-tau.vercel.app/api/efood/restaurantes/${id}`)
+      .then((res) => res.json())
+      .then((res) => setCatalogoServico(res))
+  }, [id])
+
+  if (!catalogoServico) {
+    return (
       <div className="container">
-        <ImgBanner style={{ backgroundImage: `url(${bannerImg})` }}>
-          <h3>Italiana</h3>
-          <h1>La Dolce Vita Trattoria</h1>
-        </ImgBanner>
+        <h3>Carregando...</h3>
       </div>
-    </>
+    )
+  }
+
+  return (
+    <div className="container">
+      {catalogoServico && (
+        <ImgBanner style={{ backgroundImage: `url(${catalogoServico.capa})` }}>
+          <h3>{catalogoServico.tipo}</h3>
+          <h1>{catalogoServico.titulo}</h1>
+        </ImgBanner>
+      )}
+    </div>
   )
 }
 
