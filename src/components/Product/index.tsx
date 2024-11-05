@@ -3,7 +3,6 @@ import { useLocation } from 'react-router-dom'
 import RestaurantRatingImg from '../../assets/icons/estrela.png'
 import Tag from '../../components/Tag'
 import Botao from '../Button'
-import ModalPoupap from '../Modal'
 
 import {
   CardConteiner,
@@ -14,6 +13,8 @@ import {
   LineSection,
   RatingStar
 } from './styles'
+import { Efood } from '../../pages/Home'
+import ModalPoupap from '../Modal'
 
 export type Props = {
   title: string
@@ -36,16 +37,36 @@ const Products = ({
 }: Props) => {
   const location = useLocation()
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const [currentItem, setCurrentItem] = useState<Efood | null>(null) // Defina como Efood | null
 
   const toggleModal = () => {
     setIsModalOpen(!isModalOpen)
   }
 
   const handleButtonClick = () => {
-    if (location.pathname === '/Perfil') {
-      toggleModal()
-    } else {
+    if (location.pathname === '/') {
       window.location.href = to
+    } else {
+      setCurrentItem({
+        id: 1,
+        capa: image,
+        titulo: title,
+        descricao: description,
+        tipo: 'tipo',
+        destacado: true,
+        avaliacao: nota,
+        cardapio: [
+          {
+            foto: image,
+            preco: 10,
+            id: 1,
+            nome: 'Nome do item',
+            descricao: 'Descrição do item',
+            porcao: 'Porção'
+          }
+        ]
+      })
+      toggleModal()
     }
   }
 
@@ -70,25 +91,31 @@ const Products = ({
               </div>
             </LineSection>
             <p>{description}</p>
-            <Botao
-              type="link"
-              to={to}
-              title={
-                location.pathname === '/Perfil'
-                  ? 'Adicionar ao carrinho'
-                  : 'Saiba mais'
-              }
-              background={background}
-              onClick={handleButtonClick}
-            >
-              {location.pathname === '/Perfil'
-                ? 'Adicionar ao carrinho'
-                : 'Saiba mais'}
-            </Botao>
+            {location.pathname === '/' ? (
+              <Botao
+                type="link"
+                to={to}
+                title="Saiba mais"
+                background={background}
+              >
+                Saiba mais
+              </Botao>
+            ) : (
+              <Botao
+                type="button"
+                onClick={handleButtonClick}
+                title="Adicionar ao carrinho"
+                background={background}
+              >
+                Adicionar ao carrinho
+              </Botao>
+            )}
           </ContainerDescritivo>
         </CardRestaurant>
       </CardConteiner>
-      {isModalOpen && <ModalPoupap onClose={toggleModal} />}
+      {isModalOpen && currentItem && (
+        <ModalPoupap item={currentItem} onClose={toggleModal} />
+      )}
     </div>
   )
 }

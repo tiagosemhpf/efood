@@ -14,7 +14,6 @@ export const ButtonContainer = styled.button<{ background: 'light' | 'dark' }>`
   font-weight: 700;
   line-height: 16px;
   text-align: center;
-  margin-top: 16px;
   cursor: pointer;
 `
 
