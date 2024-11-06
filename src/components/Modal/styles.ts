@@ -24,6 +24,7 @@ export const Poupap = styled.div`
   padding: 32px;
   background-color: ${colors.rosePink};
   z-index: 1; /* Definindo um z-index mais alto para o conteúdo do popup */
+
   h3 {
     height: 21px;
     font-size: 18px;
@@ -32,9 +33,10 @@ export const Poupap = styled.div`
     color: ${colors.white};
     margin-bottom: 16px;
   }
+
   p {
     width: 656px;
-    height: 176px;
+    /* height: 176px; */
     font-size: 14px;
     font-weight: 400;
     line-height: 22px;
@@ -42,6 +44,7 @@ export const Poupap = styled.div`
     color: ${colors.white};
     margin: 16px 0;
   }
+
   ${TagContainer} {
     width: 218px;
     height: 24px;
@@ -68,6 +71,7 @@ export const CloseImg = styled.div`
   right: 8px;
   cursor: pointer;
   z-index: 1; /* Garantindo que o botão de fechar esteja acima de tudo */
+
   > img {
     width: 16px;
     height: 16px;

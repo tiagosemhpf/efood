@@ -1,7 +1,8 @@
+// ModalPoupap.tsx
 import React from 'react'
 import ImgPoupapClose from '../../assets/icons/close.png'
-import Tag from '../Tag'
 import Botao from '../Button'
+import Tag from '../Tag'
 import {
   CloseImg,
   ContainerPoupap,
@@ -16,6 +17,7 @@ interface ModalPoupapProps {
   descricao: string
   preco: number
   nome: string
+  porcao: string
 }
 
 const ModalPoupap: React.FC<ModalPoupapProps> = ({
@@ -23,7 +25,8 @@ const ModalPoupap: React.FC<ModalPoupapProps> = ({
   foto,
   descricao,
   preco,
-  nome
+  nome,
+  porcao
 }) => {
   const formatPreco = (preco = 0) => {
     return new Intl.NumberFormat('pt-BR', {
@@ -33,13 +36,14 @@ const ModalPoupap: React.FC<ModalPoupapProps> = ({
   }
 
   const handleAddToCart = () => {
-    console.log('Item adicionado ao carrinho:', nome)
-    onClose()
+    // Lógica para adicionar o item ao carrinho
+    // console.log('Item adicionado ao carrinho:', nome)
+    onClose() // Fecha o modal após adicionar ao carrinho (simulação)
   }
 
   return (
     <div className="container">
-      <ContainerPoupap className="overlay">
+      <ContainerPoupap className="overlay" onClick={onClose}>
         <Poupap>
           <CloseImg onClick={onClose}>
             <img src={ImgPoupapClose} alt="Fechar modal" />
@@ -49,11 +53,16 @@ const ModalPoupap: React.FC<ModalPoupapProps> = ({
           </SectionImgModal>
           <div>
             <h3>{nome}</h3>
-            <p>{descricao}</p>
+            <p>
+              {descricao}
+              <br />
+              <br />
+              {porcao}
+            </p>
             <Tag size="big">
               <Botao
                 type="button"
-                onClick={handleAddToCart}
+                onClick={handleAddToCart} // Adiciona a função de clique
                 title={'Adicionar ao carrinho'}
                 background="dark"
               >

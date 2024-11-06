@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import Header from '../../components/Header'
 import ProductList from '../../components/ProductList'
-import { Efood } from '../Perfil'
+import { Efood } from '../../services/api'
 
 const Home = () => {
   const [catalogoServico, setCatalogoServico] = useState<Efood[]>([])
@@ -16,7 +16,6 @@ const Home = () => {
   return (
     <>
       <Header background="light" />
-      {}
       <ProductList title="" background="light" efoods={catalogoServico} />
     </>
   )

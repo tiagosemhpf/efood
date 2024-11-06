@@ -1,8 +1,7 @@
 import React from 'react'
-import { Link, useLocation } from 'react-router-dom'
+import { Link, useLocation, useParams } from 'react-router-dom'
 import LogoImgHome from '../../assets/icons/logo.png'
 import BannerImgHome from '../../assets/images/BannerImgHome.png'
-
 import {
   CarrinhoDeProdutos,
   ContainerHeader,
@@ -19,14 +18,16 @@ export type Props = {
 const Header = ({ background }: Props) => {
   const location = useLocation()
 
+  const { id } = useParams<{ id: string }>()
+  // Defini o texto na localização atual
   const titleText =
     location.pathname === '/Perfil'
       ? ''
       : 'Viva experiências gastronômicas no conforto da sua casa'
 
-  const titleRestaurate = location.pathname === '/Perfil' ? 'Restaurantes' : ''
-  const titleCarrinho =
-    location.pathname === '/Perfil' ? '0 produto(s) no carrinho' : ''
+  // Defini o texto na localização atual
+  const titleRestaurate = id ? 'Restaurantes' : ''
+  const titleCarrinho = id ? '0 produto(s) no carrinho' : ''
 
   return (
     <HeaderPage className="container">
@@ -43,7 +44,7 @@ const Header = ({ background }: Props) => {
                 src={LogoImgHome}
                 alt="efood"
                 width="150"
-                height="50"
+                height="50" // Definindo altura e largura da imagem
               />
             </Link>
             <CarrinhoDeProdutos>{titleCarrinho}</CarrinhoDeProdutos>
@@ -54,4 +55,5 @@ const Header = ({ background }: Props) => {
     </HeaderPage>
   )
 }
+
 export default React.memo(Header)

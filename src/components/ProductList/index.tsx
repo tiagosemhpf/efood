@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useLocation, useParams } from 'react-router-dom'
-import { CardapioItem, Efood } from '../../pages/Perfil'
-import Products from '../Product'
+import { CardapioItem, Efood } from '../../services/api'
+import Product from '../Product'
 import { ProductListContainer, ProductListItem } from './styles'
 
 export type Props = {
@@ -19,11 +19,23 @@ const ProductList: React.FC<Props> = ({ title, background, efoods }) => {
   )
 
   useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(
+          `https://fake-api-tau.vercel.app/api/efood/restaurantes/${id}`
+        )
+        if (!response.ok) {
+          throw new Error('Erro ao carregar dados')
+        }
+        const data = await response.json()
+        setCatalogoServico(Array.isArray(data) ? data : [data]) // Assuming data is an array or an object
+      } catch (error) {
+        console.error('Erro ao carregar dados:', error)
+      }
+    }
+
     if (efoods.length === 0) {
-      fetch(`https://fake-api-tau.vercel.app/api/efood/restaurantes/${id}`)
-        .then((res) => res.json())
-        .then((res) => setCatalogoServico([res]))
-        .catch((error) => console.error('Erro ao carregar dados:', error))
+      fetchData()
     } else {
       setCatalogoServico(efoods)
     }
@@ -49,39 +61,47 @@ const ProductList: React.FC<Props> = ({ title, background, efoods }) => {
       <ProductListContainer background={background}>
         <h2>{title}</h2>
         <ProductListItem background={background}>
-          {catalogoServico.map((efood) =>
-            efood.cardapio.map((item) => (
-              <Products
-                key={item.id}
-                image={item.foto}
-                infos={getEfoodTags(efood)}
-                title={item.nome}
-                nota={efood.avaliacao}
-                description={item.descricao}
-                to={`/perfil/${efood.id}`}
-                background={background}
-                currentItem={item}
-                shouldTruncateDescription={location.pathname.includes(
-                  '/perfil'
-                )}
-              />
-            ))
-          )}
+          {location.pathname.startsWith('/perfil')
+            ? // Renderizar informações de CardapioItem quando estiver na página Perfil/id
+              catalogoServico.map((efood) =>
+                efood.cardapio.map((item) => (
+                  <Product
+                    key={item.id}
+                    image={item.foto}
+                    infos={getEfoodTags(efood)}
+                    title={item.nome}
+                    nota={efood.avaliacao}
+                    description={item.descricao}
+                    to={`/perfil/${efood.id}`}
+                    background={background}
+                    currentItem={item}
+                    shouldTruncateDescription={location.pathname.includes(
+                      '/perfil'
+                    )}
+                    id={efood.id.toString()} // Convertendo efood.id para string
+                  />
+                ))
+              )
+            : // Renderizar informações de Efood quando estiver na página HOME
+              catalogoServico.map((efood) => (
+                <Product
+                  key={efood.id}
+                  image={efood.capa}
+                  infos={getEfoodTags(efood)}
+                  title={efood.titulo}
+                  nota={efood.avaliacao}
+                  description={efood.descricao}
+                  to={`/perfil/${efood.id}`}
+                  background={background}
+                  currentItem={null}
+                  shouldTruncateDescription={location.pathname.includes(
+                    '/perfil'
+                  )}
+                  id={efood.id.toString()} // Convertendo efood.id para string
+                />
+              ))}
         </ProductListItem>
       </ProductListContainer>
-      {currentItemModal && (
-        <Products
-          image={currentItemModal.foto}
-          infos={[]}
-          title={currentItemModal.nome}
-          nota={0}
-          description={currentItemModal.descricao}
-          to=""
-          background={background}
-          currentItem={currentItemModal}
-          shouldTruncateDescription={false}
-        />
-      )}
     </div>
   )
 }
