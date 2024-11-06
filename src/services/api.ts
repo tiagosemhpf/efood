@@ -1,24 +1,7 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 
-export interface CardapioItem {
-  id: string
-  foto: string
-  descricao: string
-  preco: number
-  nome: string
-  porcao: string
-}
-
-export interface Efood {
-  find(arg0: (item: { id: string | undefined }) => boolean): Efood
-  id: number
-  titulo: string
-  destacado: boolean
-  tipo: string
-  avaliacao: number
-  descricao: string
-  capa: string
-  cardapio: CardapioItem[]
+type PurchaseResponse = {
+  orderId: string
 }
 
 export const api = createApi({
@@ -31,9 +14,20 @@ export const api = createApi({
     }),
     getFeatureEfood: builder.query<Efood, string>({
       query: (id) => `restaurantes/${id}`
+    }),
+    purchase: builder.mutation<PurchaseResponse, PurchasePayload>({
+      query: (body) => ({
+        url: 'checkout',
+        method: 'POST',
+        body
+      })
     })
   })
 })
 
-export const { useGetFeatureEfoodQuery, useGetHomePageQuery } = api
+export const {
+  useGetFeatureEfoodQuery,
+  useGetHomePageQuery,
+  usePurchaseMutation
+} = api
 export default api

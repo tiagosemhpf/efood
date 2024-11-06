@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { colors } from '../../styles'
+import { breakpoints, colors } from '../../styles'
 
 export const ImgBanner = styled.div`
   width: 100%;
@@ -17,6 +17,18 @@ export const ImgBanner = styled.div`
     margin-left: 171px;
     z-index: 1;
     position: relative;
+
+    @media (max-width: ${breakpoints.tablet}) {
+      font-size: 24px;
+      margin-left: 20px;
+      padding-top: 15px;
+    }
+
+    @media (max-width: ${breakpoints.mobile}) {
+      font-size: 24px;
+      margin-left: 20px;
+      padding-top: 15px;
+    }
   }
 
   h1 {
@@ -28,7 +40,22 @@ export const ImgBanner = styled.div`
     margin-left: 171px;
     z-index: 1;
     position: relative;
+
+    @media (max-width: ${breakpoints.tablet}) {
+      font-size: 28px;
+      margin-left: 20px;
+      padding-top: 100px;
+      padding-bottom: 16px;
+    }
+
+    @media (max-width: ${breakpoints.mobile}) {
+      font-size: 28px;
+      margin-left: 20px;
+      padding-top: 100px;
+      padding-bottom: 16px;
+    }
   }
+
   &::after {
     position: absolute;
     top: 0;

@@ -1,5 +1,8 @@
 import { useParams } from 'react-router-dom'
+import Loader from '../Loader'
+
 import { useGetFeatureEfoodQuery } from '../../services/api'
+
 import { ImgBanner } from './styles'
 
 type Params = {
@@ -8,14 +11,10 @@ type Params = {
 
 const Banner = () => {
   const { id } = useParams<Params>()
-  const { data: catalogoServico, isLoading } = useGetFeatureEfoodQuery(id!)
+  const { data: catalogoServico, isLoading } = useGetFeatureEfoodQuery(id || '')
 
   if (isLoading) {
-    return (
-      <div className="container">
-        <h3>Carregando...</h3>
-      </div>
-    )
+    return <Loader />
   }
 
   if (!catalogoServico) {

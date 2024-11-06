@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import { Props } from '.'
-import { colors } from '../../styles'
+import { breakpoints, colors } from '../../styles'
 import { ButtonContainer } from '../Button/styles'
 import {
   CardConteiner,
@@ -11,7 +11,9 @@ import {
 } from '../Product/styles'
 import { TagContainer } from '../Tag/styles'
 
-export const ProductListContainer = styled.div<Omit<Props, 'title' | 'efoods'>>`
+export const ProductListContainer = styled.div<
+  Omit<Props, 'title' | 'efoods' | 'isLoading'>
+>`
   width: 100%;
   display: flex;
   justify-content: center;
@@ -26,12 +28,13 @@ export const ProductListContainer = styled.div<Omit<Props, 'title' | 'efoods'>>`
     justify-content: ${(props) =>
       props.background === 'dark' ? 'center' : ''};
     background-color: ${(props) =>
-      props.background === 'dark' ? colors.rosePink : ''};
+      props.background === 'dark' ? colors.LightSalmon : ''};
     height: ${(props) => (props.background === 'dark' ? '338px' : '')};
 
     ${CardRestaurant} {
       width: ${(props) => (props.background === 'dark' ? '320px' : '')};
       height: ${(props) => (props.background === 'dark' ? '338px' : '')};
+
       ${Imagem} {
         width: ${(props) => (props.background === 'dark' ? '304px' : '')};
         height: ${(props) => (props.background === 'dark' ? '167px' : '')};
@@ -46,13 +49,15 @@ export const ProductListContainer = styled.div<Omit<Props, 'title' | 'efoods'>>`
 
       ${ContainerDescritivo} {
         background-color: ${(props) =>
-          props.background === 'dark' ? colors.rosePink : colors.white};
+          props.background === 'dark' ? colors.LightSalmon : colors.white};
         width: ${(props) => (props.background === 'dark' ? '320px' : '')};
         height: ${(props) => (props.background === 'dark' ? '88px' : '')};
 
         h3 {
           color: ${(props) =>
-            props.background === 'dark' ? colors.palePeach : colors.rosePink};
+            props.background === 'dark'
+              ? colors.BlanchedAlmond
+              : colors.LightSalmon};
           font-size: ${(props) =>
             props.background === 'dark' ? '16px' : '18px'};
           font-weight: ${(props) =>
@@ -67,7 +72,9 @@ export const ProductListContainer = styled.div<Omit<Props, 'title' | 'efoods'>>`
         p {
           width: ${(props) => (props.background === 'dark' ? '304px' : '')};
           color: ${(props) =>
-            props.background === 'dark' ? colors.palePeach : colors.rosePink};
+            props.background === 'dark'
+              ? colors.BlanchedAlmond
+              : colors.LightSalmon};
           height: ${(props) => (props.background === 'dark' ? '88px' : '')};
           margin: ${(props) => (props.background === 'dark' ? '8px' : '')};
         }
@@ -79,13 +86,26 @@ export const ProductListContainer = styled.div<Omit<Props, 'title' | 'efoods'>>`
 
         ${ButtonContainer} {
           background-color: ${(props) =>
-            props.background === 'dark' ? colors.palePeach : colors.rosePink};
+            props.background === 'dark'
+              ? colors.BlanchedAlmond
+              : colors.LightSalmon};
           color: ${(props) =>
-            props.background === 'dark' ? colors.rosePink : colors.palePeach};
+            props.background === 'dark'
+              ? colors.LightSalmon
+              : colors.BlanchedAlmond};
           height: ${(props) => (props.background === 'dark' ? '24px' : '')};
           margin-left: 8px;
         }
       }
+    }
+    @media (max-width: ${breakpoints.tablet}) {
+      align-items: center;
+      margin: 0 auto;
+    }
+
+    @media (max-width: ${breakpoints.mobile}) {
+      align-items: center;
+      margin: 0 auto;
     }
   }
 `
@@ -103,4 +123,12 @@ export const ProductListItem = styled.ul<Omit<Props, 'title' | 'efoods'>>`
   align-content: center;
   align-items: center;
   justify-items: center;
+
+  @media (max-width: ${breakpoints.tablet}) {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  @media (max-width: ${breakpoints.mobile}) {
+    grid-template-columns: 1fr;
+  }
 `

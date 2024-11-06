@@ -1,20 +1,24 @@
 import React, { useEffect, useState } from 'react'
 import { useLocation, useParams } from 'react-router-dom'
-import { CardapioItem, Efood } from '../../services/api'
+
 import Product from '../Product'
+
+import Loader from '../Loader'
 import { ProductListContainer, ProductListItem } from './styles'
 
 export type Props = {
   title: string
   background: 'light' | 'dark'
-  efoods: Efood[] | CardapioItem[]
+  efoods?: Efood[] | CardapioItem[]
   isCardapio?: boolean
+  isLoading?: boolean
 }
 
 const ProductList: React.FC<Props> = ({
   title,
   background,
   efoods,
+  isLoading,
   isCardapio = false
 }) => {
   const { id } = useParams<{ id: string }>()
@@ -22,9 +26,6 @@ const ProductList: React.FC<Props> = ({
   const [catalogoServico, setCatalogoServico] = useState<
     Efood[] | CardapioItem[]
   >([])
-  const [currentItemModal, setCurrentItemModal] = useState<CardapioItem | null>(
-    null
-  )
 
   useEffect(() => {
     const fetchData = async () => {
@@ -36,22 +37,18 @@ const ProductList: React.FC<Props> = ({
           throw new Error('Erro ao carregar dados')
         }
         const data = await response.json()
-        setCatalogoServico(Array.isArray(data) ? data : [data]) // Assuming data is an array or an object
+        setCatalogoServico(Array.isArray(data) ? data : [data])
       } catch (error) {
         console.error('Erro ao carregar dados:', error)
       }
     }
 
-    if (efoods.length === 0) {
+    if (efoods && efoods.length === 0) {
       fetchData()
     } else {
-      setCatalogoServico(efoods)
+      setCatalogoServico(efoods ?? [])
     }
   }, [id, efoods])
-
-  const handleButtonClick = (item: CardapioItem) => {
-    setCurrentItemModal(item)
-  }
 
   const getEfoodTags = (efood: Efood) => {
     const tags: string[] = []
@@ -64,20 +61,22 @@ const ProductList: React.FC<Props> = ({
     return tags
   }
 
+  if (isLoading) {
+    return <Loader />
+  }
+
   return (
     <div className="container">
       <ProductListContainer background={background}>
         <h2>{title}</h2>
         <ProductListItem background={background}>
           {isCardapio
-            ? // Renderizar informações de CardapioItem quando estiver na página Perfil/id
-              (catalogoServico as CardapioItem[]).map((item) => (
+            ? (catalogoServico as CardapioItem[]).map((item) => (
                 <Product
                   key={item.id}
                   image={item.foto}
                   infos={[]}
                   title={item.nome}
-                  // Remove a propriedade nota se for CardapioItem
                   description={item.descricao}
                   to={`/perfil/${id}`}
                   background={background}
@@ -88,8 +87,7 @@ const ProductList: React.FC<Props> = ({
                   id={item.id}
                 />
               ))
-            : // Renderizar informações de Efood quando estiver na página HOME
-              (catalogoServico as Efood[]).map((efood) => (
+            : (catalogoServico as Efood[]).map((efood) => (
                 <Product
                   key={efood.id}
                   image={efood.capa}
@@ -103,7 +101,7 @@ const ProductList: React.FC<Props> = ({
                   shouldTruncateDescription={location.pathname.includes(
                     '/perfil'
                   )}
-                  id={efood.id.toString()} // Convertendo efood.id para string
+                  id={efood.id.toString()}
                 />
               ))}
         </ProductListItem>
