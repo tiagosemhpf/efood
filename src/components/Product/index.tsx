@@ -1,11 +1,10 @@
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import RestaurantRatingImg from '../../assets/icons/estrela.png'
 import Tag from '../../components/Tag'
+import { CardapioItem } from '../../pages/Perfil'
 import Botao from '../Button'
-import { Efood } from '../../pages/Perfil'
 import ModalPoupap from '../Modal'
-
 import {
   CardConteiner,
   CardRestaurant,
@@ -15,67 +14,50 @@ import {
   LineSection,
   RatingStar
 } from './styles'
-
 export type Props = {
-  title: string
-  infos: string[]
-  nota: number
   image: string
+  infos: string[]
+  title: string
+  nota: number
   description: string
   to: string
   background: 'light' | 'dark'
-  setIsModalVisible: React.Dispatch<React.SetStateAction<boolean>>
-  isModalOpen: boolean
-  currentItem: Efood
+  currentItem: CardapioItem
   shouldTruncateDescription?: boolean
 }
 
-const Products = ({
-  title,
-  description,
-  infos,
-  nota,
+const Products: React.FC<Props> = ({
   image,
+  infos,
+  title,
+  nota,
+  description,
   to,
   background,
-  setIsModalVisible,
-  isModalOpen,
   currentItem,
   shouldTruncateDescription = false
-}: Props) => {
+}) => {
   const location = useLocation()
-  const [currentItemModal, setCurrentItemModal] = useState<Efood | null>(null)
+  const [isModalVisible, setIsModalVisible] = useState(false)
 
   const toggleModal = () => {
-    if (typeof isModalOpen === 'boolean') {
-      setIsModalVisible(!isModalOpen)
-    }
-  }
-
-  const handleButtonClick = () => {
-    if (location.pathname === '/') {
-      window.location.href = to
-    } else {
-      setCurrentItemModal(currentItem)
-      toggleModal()
-    }
+    setIsModalVisible(!isModalVisible)
   }
 
   const getTruncatedDescription = (description: string) => {
     if (description && description.length > 160) {
-      return description.slice(0, 163) + '...'
+      return description.slice(0, 160) + '...'
     }
     return description
   }
-
   return (
     <div className="container">
       <CardConteiner>
         <CardRestaurant>
           <Imagem style={{ backgroundImage: `url(${image})` }} />
           <Infos>
-            {infos.map((info) => (
-              <Tag key={info}>{info}</Tag>
+            {infos.map((info, index) => (
+              <Tag key={index}>{info}</Tag>
             ))}
           </Infos>
           <ContainerDescritivo>
@@ -93,35 +75,28 @@ const Products = ({
               location.pathname.includes('/perfil')
                 ? getTruncatedDescription(description)
                 : description}
-            </p>{' '}
-            {}
-            {location.pathname === '/' ? (
-              <Botao
-                type="link"
-                to={to}
-                title="Saiba mais"
-                background={background}
-              >
-                Saiba mais
-              </Botao>
-            ) : (
-              <Botao
-                type="button"
-                onClick={handleButtonClick}
-                title="Adicionar ao carrinho"
-                background={background}
-              >
-                Adicionar ao carrinho
-              </Botao>
-            )}
+            </p>
+            <Botao
+              type="button"
+              onClick={toggleModal}
+              title="Adicionar ao carrinho"
+              background={background}
+            >
+              Adicionar ao carrinho
+            </Botao>
           </ContainerDescritivo>
         </CardRestaurant>
       </CardConteiner>
-      {isModalOpen && currentItemModal && (
-        <ModalPoupap item={currentItemModal} onClose={toggleModal} />
+      {isModalVisible && (
+        <ModalPoupap
+          onClose={toggleModal}
+          foto={currentItem.foto}
+          descricao={currentItem.descricao}
+          preco={currentItem.preco}
+          nome={currentItem.nome}
+        />
       )}
     </div>
   )
 }
-
 export default Products

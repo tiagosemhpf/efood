@@ -1,10 +1,18 @@
 import { useEffect, useState } from 'react'
 import Banner from '../../components/Banner'
 import Header from '../../components/Header'
-
 import ProductList from '../../components/ProductList'
 
-export type Efood = {
+export interface CardapioItem {
+  id: string
+  foto: string
+  descricao: string
+  preco: number
+  nome: string
+  porcao: string // Exemplo de campo obrigatório
+}
+
+export interface Efood {
   id: number
   titulo: string
   destacado: boolean
@@ -12,14 +20,7 @@ export type Efood = {
   avaliacao: number
   descricao: string
   capa: string
-  cardapio: {
-    foto: string
-    preco: number
-    id: number
-    nome: string
-    descricao: string
-    porcao: string
-  }[]
+  cardapio: CardapioItem[]
 }
 
 const Perfil = () => {
@@ -40,4 +41,5 @@ const Perfil = () => {
     </>
   )
 }
+
 export default Perfil

@@ -1,20 +1,23 @@
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useLocation, useParams } from 'react-router-dom'
-import { Efood } from '../../pages/Perfil'
-import Product from '../Product'
+import { CardapioItem, Efood } from '../../pages/Perfil'
+import Products from '../Product'
 import { ProductListContainer, ProductListItem } from './styles'
+
 export type Props = {
   title: string
   background: 'light' | 'dark'
   efoods: Efood[]
 }
-const ProductList = ({ background, title, efoods }: Props) => {
+
+const ProductList: React.FC<Props> = ({ title, background, efoods }) => {
   const { id } = useParams<{ id: string }>()
   const location = useLocation()
   const [catalogoServico, setCatalogoServico] = useState<Efood[]>([])
-  const [isModalVisible, setIsModalVisible] = useState(false)
+  const [currentItemModal, setCurrentItemModal] = useState<CardapioItem | null>(
+    null
+  )
 
-  const isPerfilPage = location.pathname.includes('/perfil')
   useEffect(() => {
     if (efoods.length === 0) {
       fetch(`https://fake-api-tau.vercel.app/api/efood/restaurantes/${id}`)
@@ -25,6 +28,11 @@ const ProductList = ({ background, title, efoods }: Props) => {
       setCatalogoServico(efoods)
     }
   }, [id, efoods])
+
+  const handleButtonClick = (item: CardapioItem) => {
+    setCurrentItemModal(item)
+  }
+
   const getEfoodTags = (efood: Efood) => {
     const tags: string[] = []
     if (efood.tipo) {
@@ -35,48 +43,47 @@ const ProductList = ({ background, title, efoods }: Props) => {
     }
     return tags
   }
+
   return (
     <div className="container">
       <ProductListContainer background={background}>
         <h2>{title}</h2>
         <ProductListItem background={background}>
           {catalogoServico.map((efood) =>
-            isPerfilPage ? (
-              efood.cardapio.map((item) => (
-                <Product
-                  key={item.id}
-                  image={item.foto}
-                  infos={getEfoodTags(efood)}
-                  title={item.nome}
-                  nota={efood.avaliacao}
-                  description={item.descricao}
-                  to={`/perfil/${efood.id}`}
-                  background={background}
-                  setIsModalVisible={setIsModalVisible}
-                  isModalOpen={isModalVisible}
-                  currentItem={efood}
-                  shouldTruncateDescription={true}
-                />
-              ))
-            ) : (
-              <Product
-                key={efood.id}
-                image={efood.capa}
+            efood.cardapio.map((item) => (
+              <Products
+                key={item.id}
+                image={item.foto}
                 infos={getEfoodTags(efood)}
-                title={efood.titulo}
+                title={item.nome}
                 nota={efood.avaliacao}
-                description={efood.descricao} // Passa a descrição sem truncamento
+                description={item.descricao}
                 to={`/perfil/${efood.id}`}
                 background={background}
-                setIsModalVisible={setIsModalVisible}
-                isModalOpen={isModalVisible}
-                currentItem={efood}
+                currentItem={item}
+                shouldTruncateDescription={location.pathname.includes(
+                  '/perfil'
+                )}
               />
-            )
+            ))
           )}
         </ProductListItem>
       </ProductListContainer>
+      {currentItemModal && (
+        <Products
+          image={currentItemModal.foto}
+          infos={[]}
+          title={currentItemModal.nome}
+          nota={0}
+          description={currentItemModal.descricao}
+          to=""
+          background={background}
+          currentItem={currentItemModal}
+          shouldTruncateDescription={false}
+        />
+      )}
     </div>
   )
 }
+
 export default ProductList

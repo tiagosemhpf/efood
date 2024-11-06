@@ -6,14 +6,19 @@ import { Efood } from '../../pages/Perfil'
 const Banner = () => {
   const [catalogoServico, setCatalogoServico] = useState<Efood | null>(null)
   const { id } = useParams<{ id: string }>()
+  const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
     fetch(`https://fake-api-tau.vercel.app/api/efood/restaurantes/${id}`)
       .then((res) => res.json())
-      .then((res) => setCatalogoServico(res))
+      .then((res) => {
+        setCatalogoServico(res)
+        setIsLoading(false)
+      })
+      .catch((error) => console.error('Erro ao carregar dados:', error))
   }, [id])
 
-  if (!catalogoServico) {
+  if (isLoading) {
     return (
       <div className="container">
         <h3>Carregando...</h3>

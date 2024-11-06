@@ -1,7 +1,6 @@
 import React from 'react'
 import ImgPoupapClose from '../../assets/icons/close.png'
 import Tag from '../Tag'
-import { Efood } from '../../pages/Perfil'
 import Botao from '../Button'
 import {
   CloseImg,
@@ -11,22 +10,33 @@ import {
   SectionImgModal
 } from './styles'
 
-type EfoodItem = Efood | null
-
 interface ModalPoupapProps {
   onClose: () => void
-  item: EfoodItem
+  foto: string
+  descricao: string
+  preco: number
+  nome: string
 }
 
-const ModalPoupap: React.FC<ModalPoupapProps> = ({ onClose, item }) => {
-  if (!item) return null
-
+const ModalPoupap: React.FC<ModalPoupapProps> = ({
+  onClose,
+  foto,
+  descricao,
+  preco,
+  nome
+}) => {
   const formatPreco = (preco = 0) => {
     return new Intl.NumberFormat('pt-BR', {
       style: 'currency',
       currency: 'BRL'
     }).format(preco)
   }
+
+  const handleAddToCart = () => {
+    console.log('Item adicionado ao carrinho:', nome)
+    onClose()
+  }
+
   return (
     <div className="container">
       <ContainerPoupap className="overlay">
@@ -35,23 +45,21 @@ const ModalPoupap: React.FC<ModalPoupapProps> = ({ onClose, item }) => {
             <img src={ImgPoupapClose} alt="Fechar modal" />
           </CloseImg>
           <SectionImgModal>
-            <ModalImage src={item.capa} alt={item.titulo} />
+            <ModalImage src={foto} alt="Produto" />
           </SectionImgModal>
           <div>
-            <h3>{item.titulo}</h3>
-            <p>{item.descricao}</p>
-            {}
-            {item.cardapio && item.cardapio.length > 0 && (
-              <Tag size="big">
-                <Botao
-                  type="button"
-                  title={'Adicionar ao carrinho'}
-                  background="dark"
-                >
-                  Adicionar ao carrinho - {formatPreco(item.cardapio[0].preco)}
-                </Botao>
-              </Tag>
-            )}
+            <h3>{nome}</h3>
+            <p>{descricao}</p>
+            <Tag size="big">
+              <Botao
+                type="button"
+                onClick={handleAddToCart}
+                title={'Adicionar ao carrinho'}
+                background="dark"
+              >
+                Adicionar ao carrinho - {formatPreco(preco)}
+              </Botao>
+            </Tag>
           </div>
         </Poupap>
       </ContainerPoupap>
