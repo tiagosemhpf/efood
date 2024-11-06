@@ -30,7 +30,7 @@ type ProductProps = {
   image: string
   infos: string[]
   title: string
-  nota: number
+  nota?: number // Tornar 'nota' opcional
   description: string
   to: string
   background: 'light' | 'dark'
@@ -58,7 +58,7 @@ const Product: React.FC<ProductProps> = ({
     setIsModalVisible(!isModalVisible)
   }
 
-  const buttonText = location.pathname.startsWith(`/perfil/${id}`)
+  const buttonText = location.pathname.startsWith(`/perfil/`)
     ? 'Adicionar ao carrinho'
     : 'Saiba mais'
 
@@ -68,6 +68,8 @@ const Product: React.FC<ProductProps> = ({
     }
     return description
   }
+
+  const isPerfilPage = location.pathname.startsWith(`/perfil/`)
 
   return (
     <div className="container">
@@ -90,12 +92,11 @@ const Product: React.FC<ProductProps> = ({
               </div>
             </LineSection>
             <p>
-              {shouldTruncateDescription &&
-              location.pathname.startsWith(`/perfil/${id}`)
+              {isPerfilPage && shouldTruncateDescription
                 ? getTruncatedDescription(description)
                 : description}
             </p>
-            {location.pathname.startsWith(`/perfil/${id}`) ? (
+            {isPerfilPage ? (
               <Botao
                 type="button"
                 onClick={toggleModal}
