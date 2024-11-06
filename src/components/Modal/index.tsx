@@ -1,7 +1,7 @@
 import React from 'react'
 import ImgPoupapClose from '../../assets/icons/close.png'
 import Tag from '../Tag'
-import { Efood } from '../ProductList'
+import { Efood } from '../../pages/Perfil'
 import Botao from '../Button'
 import {
   CloseImg,
@@ -40,13 +40,13 @@ const ModalPoupap: React.FC<ModalPoupapProps> = ({ onClose, item }) => {
           <div>
             <h3>{item.titulo}</h3>
             <p>{item.descricao}</p>
-            {/* Verifica se há itens no cardápio antes de exibir */}
-            {item.cardapio.length > 0 && (
+            {}
+            {item.cardapio && item.cardapio.length > 0 && (
               <Tag size="big">
                 <Botao
                   type="button"
                   title={'Adicionar ao carrinho'}
-                  background="dark" // Exemplo de background, substitua conforme necessário
+                  background="dark"
                 >
                   Adicionar ao carrinho - {formatPreco(item.cardapio[0].preco)}
                 </Botao>
