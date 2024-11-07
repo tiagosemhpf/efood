@@ -9,7 +9,7 @@ import twSrc from '../../assets/icons/twitter.png'
 import * as S from './styles'
 
 const Footer = () => (
-  <S.Footers className="container">
+  <S.Footers className="containier">
     <S.SectionFooter>
       <Link title="Clique aqui para retornar a pagina home" to="/">
         <img className="imagemLogo" src={LogoImgHome} alt="efood" />

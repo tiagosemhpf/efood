@@ -34,12 +34,12 @@ const Header = ({ background }: Props) => {
   const titleCarrinho = id ? `${items.length} produto(s) no carrinho` : ''
 
   return (
-    <S.HeaderPage className="container">
+    <S.HeaderPage className="containier">
       <S.Imagem
         style={{ backgroundImage: `url(${BannerImgHome})` }}
         background={background}
       >
-        <div className="container">
+        <div className="containier">
           <S.ContainerHeader>
             <S.RestaurantName>{titleRestaurate}</S.RestaurantName>
             <Link title="Clique aqui para retornar a pagina home" to="/">

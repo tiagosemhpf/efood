@@ -7,36 +7,33 @@ export const HeaderPage = styled.div`
 `
 
 export const Imagem = styled.div<Props>`
-  max-width: 2031.81px;
-  width: 100%;
-  max-height: ${(props) => (props.background === 'dark' ? '186px' : '360px')};
-  height: 100%;
+  width: 100vw; /* Ocupa toda a largura da viewport */
+  height: ${(props) => (props.background === 'dark' ? '186px' : '360px')};
   display: block;
   background-repeat: no-repeat;
-  background-size: cover;
+  background-size: cover; /* Garante que a imagem preencha o espaço horizontal */
+  background-position: center; /* Centraliza a imagem */
 
-  .container {
+  .containier {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 40px 171px;
   }
 
   .imagemLogoLnk {
     display: flex;
     align-items: center;
     justify-content: center;
+    margin-top: 57.5px;
     width: 125px;
     height: 57.5px;
 
-    /* Estilo para tablet */
     @media (max-width: ${breakpoints.tablet}) {
       margin-top: 40px;
       margin-bottom: 0;
     }
 
-    /* Estilo para mobile */
     @media (max-width: ${breakpoints.mobile}) {
       margin-top: 40px;
       margin-bottom: 0;
@@ -53,7 +50,6 @@ export const Titulo = styled.h2`
   text-align: center;
   margin-top: 138.5px;
 
-  /* Estilo para tablet */
   @media (max-width: ${breakpoints.tablet}) {
     width: 100%;
     height: 100%;
@@ -64,9 +60,7 @@ export const Titulo = styled.h2`
     font-size: 28px;
   }
 
-  /* Estilo para mobile */
   @media (max-width: ${breakpoints.mobile}) {
-    /* max-width: 100%; */
     width: 100%;
     height: 100%;
     font-size: 36px;
@@ -82,7 +76,6 @@ export const ContainerHeader = styled.div`
   align-items: center;
   justify-content: space-between;
 
-  /* Estilo para mobile */
   @media (max-width: ${breakpoints.mobile}) {
     align-items: center;
   }
@@ -93,11 +86,9 @@ export const RestaurantName = styled(ContainerHeader)`
   justify-content: left;
   padding-top: none;
 
-  /* Estilo para tablet */
   @media (max-width: ${breakpoints.tablet}) {
     margin-top: 40px;
   }
-  /* Estilo para mobile */
   @media (max-width: ${breakpoints.mobile}) {
     margin-top: 40px;
   }
@@ -108,12 +99,10 @@ export const CarrinhoDeProdutos = styled(ContainerHeader)`
   justify-content: right;
   padding-top: none;
 
-  /* Estilo para tablet */
   @media (max-width: ${breakpoints.tablet}) {
     margin-top: 40px;
     text-align: center;
   }
-  /* Estilo para mobile */
   @media (max-width: ${breakpoints.mobile}) {
     margin-top: 40px;
     padding-left: 5%;
